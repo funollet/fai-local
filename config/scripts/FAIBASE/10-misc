@@ -18,11 +18,6 @@ fcopy -iM /etc/hosts /etc/motd
 
 # set root password
 echo "root:$ROOTPW" | $ROOTCMD chpasswd --encrypted
-# make /root accessible only by root
-chmod 0700 $target/root
-chown root:root $target/root
-# copy default dotfiles for root account
-fcopy -ir /root
 
 # create keyboard layout table
 $ROOTCMD bash -c "echo 'console-data console-data/keymap/full select $KEYMAP' | debconf-set-selections"

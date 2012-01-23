@@ -9,9 +9,9 @@ case $HOSTNAME in
     demohost)
         echo "FAIBASE DHCPC DEMO" ;;
     faitest)
-        echo "FAIBASE KVM" ;;
-    toluca)
         echo "FAIBASE VMWARE" ;;
+    lxc*)
+        echo "FAIBASE LXC" ;;
     *)
         echo "FAIBASE" ;;
 esac

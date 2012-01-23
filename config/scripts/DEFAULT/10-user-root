@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+# copy default dotfiles for root account
+fcopy -ir /root
+# make /root accessible only by root
+chown -R root:root $target/root
+chmod 0700 $target/root
+chmod 0700 $target/root/.ssh/
+chmod 0600 $target/root/.ssh/authorized_keys
+

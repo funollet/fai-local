@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Create a user/group for local development.
+$ROOTCMD groupadd -g 1000 jordif
+$ROOTCMD useradd -m -s /bin/bash -g jordif -G sudo -u 1000 jordif
+
+# Deploy authorized_keys, owner jordif, rw-------
+fcopy -ir /home/jordif/
+chown -R 1000:1000 $target/home/jordif/
+chmod 0700 $target/home/jordif/.ssh/
+chmod 0600 $target/home/jordif/.ssh/authorized_keys
+
+# Create a directory for mounting our hosts's code directory.
+mkdir $target/home/jordif/code/
+chown 1000:1000 $target/home/jordif/code/
+
