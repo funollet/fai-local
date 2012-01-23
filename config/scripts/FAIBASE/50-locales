@@ -1,0 +1,13 @@
+#!/bin/sh 
+
+# Looks like 'aptitude install locales' ignores debconf settings.
+# et's do it again.
+
+echo "locales locales/default_environment_locale select en_US.UTF-8
+locales locales/locales_to_be_generated multiselect en_US.UTF-8 UTF-8" \
+    | $ROOTCMD debconf-set-selections -v
+
+$ROOTCMD update-locale LANG=en_US.UTF-8
+
+$ROOTCMD dpkg-reconfigure -f noninteractive locales
+

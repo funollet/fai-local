@@ -1,0 +1,28 @@
+#! /bin/bash
+
+error=0 ; trap "error=$((error|1))" ERR
+
+set -a
+
+. $LOGDIR/disk_var.sh
+
+[ -z "$BOOT_DEVICE" ]    && exit 701
+[ -z "$BOOT_PARTITION" ] && exit 702
+[ -z "$ROOT_PARTITION" ] && exit 703
+
+/usr/sbin/grub-install --root-directory=$target $BOOT_DEVICE
+
+# device2grub needs a on-char patch or it fails to detect '/dev/vdN' devices
+# (there's a missing 'v' on the regex).
+GROOT=$(device2grub $BOOT_PARTITION)
+# In the copied file, replace '#GROOT#' and '#ROOT_PARTITION#' with
+# the actual values.
+#perl -pi -e 's/#(\w+)#/$ENV{$1}/' $2
+sed -i "s|#ROOT_PARTITION#|$ROOT_PARTITION|g" $target/boot/grub/menu.lst
+sed -i "s|#GROOT#|$GROOT|g" $target/boot/grub/menu.lst
+
+$ROOTCMD /usr/sbin/update-grub
+echo "Grub installed on $BOOT_DEVICE on $GROOT"
+
+exit $error
+

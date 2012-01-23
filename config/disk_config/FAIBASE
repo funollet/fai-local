@@ -1,0 +1,11 @@
+# example of new config file for setup-storage
+#
+# <type> <mountpoint> <size>   <fs type> <mount options> <misc options>
+disk_config /dev/vda fstabkey:uuid
+primary  /boot         100%         ext3    defaults
+
+disk_config /dev/vdb fstabkey:uuid
+primary  /             100%         ext3   rw,errors=remount-ro
+
+disk_config /dev/vdc fstabkey:uuid
+primary  swap          100%         swap   rw

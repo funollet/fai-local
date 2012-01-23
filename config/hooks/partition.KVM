@@ -1,0 +1,48 @@
+#!/bin/bash
+# $FAI/hooks/partition.KVM
+#
+# Create filesystems on raw disks, without partitioning.
+
+
+# Turn $disklist into an array for easier parsing.
+array=($(echo -e $disklist | tr '\n' ' '))
+
+boot_dev=/dev/${array[0]}
+root_dev=/dev/${array[1]}
+swap_dev=/dev/${array[2]}
+
+# One partition, bootable, makes Grub happy.
+echo ',,L,*' | sfdisk -q -L ${boot_dev}
+
+# Create filesystems.
+mkfs.ext3 -q ${boot_dev}1
+mkfs.ext3 -q ${root_dev}
+mkswap ${swap_dev}
+
+# Get the UUIDs, we will use it for configuring Grub and /etc/fstab.
+root_uuid=$(vol_id --uuid ${root_dev})
+boot_uuid=$(vol_id --uuid "${boot_dev}1")
+swap_uuid=$(vol_id --uuid ${swap_dev})
+
+
+# Task partition must create this file.
+cat >> $LOGDIR/fstab <<. 
+# /etc/fstab: static file system information.
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+proc            /proc           proc    defaults        0 0
+UUID=${root_uuid}   /           ext3  errors=remount-ro   0 1
+UUID=${boot_uuid}   /boot       ext3  defaults            0 2
+UUID=${swap_uuid}   none        swap    sw           0 0
+.
+    
+# Task partition must create this file.
+cat >> $LOGDIR/disk_var.sh <<.
+BOOT_DEVICE=${boot_dev}
+BOOT_PARTITION=${boot_dev}1
+ROOT_PARTITION=${root_dev}
+SWAPLIST=${swap_dev}
+.
+
+skiptask partition
+

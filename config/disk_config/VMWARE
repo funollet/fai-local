@@ -1,0 +1,5 @@
+# <type> <mountpoint> <size>   <fs type> <mount options> <misc options>
+disk_config /dev/sda fstabkey:uuid
+primary  /boot         128M         ext3   defaults
+primary  swap          2G           swap   rw
+primary  /             50%-100%     ext3   rw,errors=remount-ro

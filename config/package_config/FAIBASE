@@ -1,0 +1,12 @@
+PACKAGES aptitude
+resolvconf
+ssh
+udev
+locales
+console-common
+lsb-release
+vim
+~prequired
+~pimportant
+bash-completion
+#puppet

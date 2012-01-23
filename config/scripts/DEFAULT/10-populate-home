@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Create a user/group for local development.
+chroot $target groupadd -g 1000 jordif
+chroot $target useradd -m -s /bin/bash -g jordif -G sudo -u 1000 jordif
+
+# Our local user can ssh as root.
+#mkdir -p $target/root/.ssh
+#cp /home/${localuser}/.ssh/authorized_keys $target/root/.ssh
+#chmod 700 $target/root/.ssh
+#chmod 600 $target/root/.ssh/authorized_keys 
+
+# Create mountpoint.
+#mkdir -p $target/home/jordif/code
+# Our local user can ssh as itself.
+#mkdir -p $target/home/jordif/.ssh
+#chmod 700 $target/home/jordif/.ssh
+fcopy -Uv /home/jordif/.ssh/authorized_keys -m jordif,jordif,600
+
+chown -R jordif:jordif $target/home/jordif/
+
