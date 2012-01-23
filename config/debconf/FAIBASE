@@ -1,3 +1,5 @@
 passwd passwd/shadow boolean true
+# Looks like configuring locales here is not enough.
+# See 'scripts/FAIBASE/50-locales'.
 locales locales/default_environment_locale select en_US.UTF-8
 locales locales/locales_to_be_generated multiselect en_US.UTF-8 UTF-8

@@ -1,7 +1,7 @@
 #!/bin/sh 
 
 # Looks like 'aptitude install locales' ignores debconf settings.
-# et's do it again.
+# Let's do it again.
 
 echo "locales locales/default_environment_locale select en_US.UTF-8
 locales locales/locales_to_be_generated multiselect en_US.UTF-8 UTF-8" \

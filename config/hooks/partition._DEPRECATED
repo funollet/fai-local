@@ -2,6 +2,11 @@
 # $FAI/hooks/partition.KVM
 #
 # Create filesystems on raw disks, without partitioning.
+# It needs a void 'disk_config/KVM' file to work, too.
+#
+# This is DEPRECATED: recent versions of setup-storage can format devices
+# without a partition.
+# This file is kept here just as documentation.
 
 
 # Turn $disklist into an array for easier parsing.
